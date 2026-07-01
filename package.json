@@ -1,0 +1,24 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Este proyecto consiste en el desarrollo de una Interfaz de Programación de Aplicaciones (API) orientada al Backend, diseñada con el propósito de dominar los fundamentos de la programación del lado del servidor, la implementación de buenas prácticas de desarrollo y el control de versiones robusto.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiago-salazar109/API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/santiago-salazar109/API/issues"
+  },
+  "homepage": "https://github.com/santiago-salazar109/API#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
