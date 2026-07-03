@@ -33,4 +33,4 @@ A continuación se detallan las rutas planificadas para la interacción con el c
 | DELETE | /api/documentos/:id | Eliminar un documento del registro del sistema | Pendiente |
 
 ---
-Desarrollado con fines de aprendizaje técnico y demostración de competencias profesionales en ingeniería de software backend.
+Desarrollado con fines de aprendizaje técnico y demostración de competencias profesionales en backend.
