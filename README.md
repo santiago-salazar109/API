@@ -1,36 +1,58 @@
-# Mi Proyecto de API Backend
 # Digital Archive Management API
 
 Este proyecto consiste en el desarrollo de una Interfaz de Programación de Aplicaciones (API) orientada al Backend, diseñada con el propósito de dominar los fundamentos de la programación del lado del servidor, la implementación de buenas prácticas de desarrollo y el control de versiones robusto.
 
 La API está enfocada en la gestión técnica de un catálogo de documentos, transcripciones y manuscritos históricos, permitiendo su registro, consulta, actualización y organización por categorías analíticas.
 
+---
+
 ## Objetivos de Aprendizaje
+
 - Comprender la arquitectura Cliente-Servidor y el funcionamiento del protocolo HTTP.
 - Desarrollar una API RESTful estructurada, modular y escalable.
 - Manipular flujos de datos mediante operaciones CRUD (Create, Read, Update, Delete).
 - Gestionar variables de entorno y configuraciones de seguridad esenciales.
 - Implementar capas de validación de datos y un sistema profesional de manejo de errores.
-- Conectar un sistema de persistencia de datos (Base de Datos) en una fase avanzada.
+- Conectar un sistema de persistencia de datos (Base de Datos Relacional) en una fase avanzada.
+
+---
 
 ## Tecnologías y Herramientas
-- Entorno de ejecución: Node.js
-- Lenguaje de programación: JavaScript (ES6+)
-- Framework de servidor: Express.js
-- Control de versiones: Git y GitHub
-- Pruebas de endpoints: Postman
 
-## Arquitectura de la API (Endpoints Planificados)
+- **Entorno de ejecución:** Node.js
+- **Lenguaje de programación:** JavaScript (ES6+)
+- **Framework de servidor:** Express.js
+- **Control de versiones:** Git y GitHub
+- **Pruebas de endpoints:** Postman
+- **Base de datos:** PostgreSQL (Fase de diseño e integración)
 
-A continuación se detallan las rutas planificadas para la interacción con el catálogo de documentos históricos:
+---
+
+## Arquitectura de la API y Estado de Endpoints
+
+A continuación se detallan las rutas programadas para la interacción con el catálogo de documentos históricos y su estado de desarrollo actual:
 
 | Método | Endpoint | Descripción | Estado |
 | :--- | :--- | :--- | :--- |
-| GET | /api/documentos | Obtener la colección completa de documentos del archivo | Pendiente |
-| GET | /api/documentos/:id | Buscar un documento específico mediante su identificador único | Pendiente |
-| POST | /api/documentos | Registrar un nuevo documento con sus respectivos metadatos | Pendiente |
-| PUT | /api/documentos/:id | Actualizar el registro o la transcripción de un documento existente | Pendiente |
-| DELETE | /api/documentos/:id | Eliminar un documento del registro del sistema | Pendiente |
+| GET | /api/documentos | Obtener la colección completa de documentos del archivo | Implementado (Memoria) |
+| GET | /api/documentos/:id | Buscar un documento específico mediante su identificador único | Implementado (Memoria) |
+| POST | /api/documentos | Registrar un nuevo documento con sus respectivos metadatos | Implementado (Memoria) |
+| PUT | /api/documentos/:id | Actualizar el registro o la transcripción de un documento existente | Implementado (Memoria) |
+| DELETE | /api/documentos/:id | Eliminar un documento del registro del sistema | Implementado (Memoria) |
 
 ---
-Desarrollado con fines de aprendizaje técnico y demostración de competencias profesionales en backend.
+
+## Modelo de Datos (Diagrama Entidad-Relación)
+
+Estructura lógica diseñada para la migración hacia el motor de base de datos relacional. Este diagrama define la entidad principal y sus restricciones de tipos de datos, renderizándose de manera nativa en GitHub mediante Mermaid.js:
+
+```mermaid
+erDiagram
+    DOCUMENTOS {
+        int id PK "Clave Primaria - Autoincremental"
+        varchar titulo "Obligatorio (max 255 chars)"
+        int anio "Año cronológico del documento"
+        text ubicacion_archivo "Depósito, Caja y Carpeta"
+        text contexto_historico "Entorno socio-político"
+        text transcripcion_paleografica "Texto transcrito del manuscrito"
+    }
