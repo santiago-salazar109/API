@@ -49,13 +49,40 @@ Estructura lógica diseñada para la migración hacia el motor de base de datos 
 
 Estructura lógica diseñada para la migración hacia el motor de base de datos relacional. Este diagrama define la entidad principal y sus restricciones de tipos de datos, renderizándose de manera nativa en GitHub mediante Mermaid.js:
 
-```mermaid
 erDiagram
-    DOCUMENTOS {
-        int id PK "Clave Primaria - Autoincremental"
-        varchar titulo "Obligatorio max 255"
-        int anio "Anio cronologico"
-        text ubicacion_archivo "Deposito Caja y Carpeta"
-        text contexto_historico "Entorno socio-politico"
-        text transcripcion_paleografica "Texto transcrito"
+    FONDOS_ARCHIVISTICOS {
+        int id PK
+        varchar nombre
+        text descripcion
     }
+
+    INVESTIGADORES {
+        int id PK
+        varchar nombre
+        varchar correo
+        varchar rol
+    }
+
+    DOCUMENTOS {
+        int id PK
+        int fondo_id FK
+        int investigador_id FK
+        varchar titulo
+        int anio
+        varchar ubicacion_fisica
+        text contexto_historico
+    }
+
+    TRANSCRIPCIONES {
+        int id PK
+        int documento_id FK
+        int investigador_id FK
+        text texto_paleografico
+        text notas_criticas
+        timestamp fecha_creacion
+    }
+
+    FONDOS_ARCHIVISTICOS ||--| DOCUMENTOS : "contiene"
+    INVESTIGADORES ||--| DOCUMENTOS : "registra"
+    DOCUMENTOS ||--| TRANSCRIPCIONES : "posee"
+    INVESTIGADORES ||--| TRANSCRIPCIONES : "transcribe"
