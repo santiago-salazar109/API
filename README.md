@@ -82,7 +82,7 @@ erDiagram
         timestamp fecha_creacion
     }
 
-    FONDOS_ARCHIVISTICOS ||--| DOCUMENTOS : "contiene"
-    INVESTIGADORES ||--| DOCUMENTOS : "registra"
-    DOCUMENTOS ||--| TRANSCRIPCIONES : "posee"
-    INVESTIGADORES ||--| TRANSCRIPCIONES : "transcribe"
+    FONDOS_ARCHIVISTICOS ||--|{ DOCUMENTOS : "contiene"
+    INVESTIGADORES ||--|{ DOCUMENTOS : "registra"
+    DOCUMENTOS ||--|{ TRANSCRIPCIONES : "posee"
+    INVESTIGADORES ||--|{ TRANSCRIPCIONES : "transcribe"

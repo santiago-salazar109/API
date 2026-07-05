@@ -1,18 +1,55 @@
--- Script de inicialización para la base de datos del Archivo Digital
--- Este script define la estructura de almacenamiento basada en el modelado Entidad-Relación
+```sql
+-- Script de inicializacion para la base de datos relacional del Archivo Digital
+-- Define la estructura normalizada de cuatro tablas interconectadas
 
--- 1. Creación de la tabla de documentos históricos
-CREATE TABLE IF NOT EXISTS documentos (
-    id SERIAL PRIMARY KEY,                          -- Identificador único autoincremental
-    titulo VARCHAR(255) NOT NULL,                   -- Título o signatura del expediente (Obligatorio)
-    anio INT,                                       -- Año cronológico de la fuente
-    ubicacion_archivo TEXT,                         -- Referencia física (Fondo, Caja, Carpeta)
-    contexto_historico TEXT,                        -- Breve análisis del entorno socio-político
-    transcripcion_paleografica TEXT                 -- Cuerpo textual del manuscrito editado
+-- 1. Tabla de Fondos Archivisticos
+CREATE TABLE IF NOT EXISTS fondos_archivisticos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT
 );
 
--- 2. Inserción de registros iniciales (Datos semilla para pruebas)
-INSERT INTO documentos (titulo, anio, ubicacion_archivo, contexto_historico, transcripcion_paleografica)
-VALUES 
-('Expediente sobre disputa de tierras - Juana Quirós', 1785, 'Archivo General de la Nación, Sección Colonia, Caja 12, Carpeta 3', 'Litigio territorial civil procesado en el Virreinato durante las reformas borbónicas.', 'En la ciudad de... ante mí el escribano público compareció Juana Quirós, vecina de este partido...'),
-('Manuscrito de cuentas de la Real Hacienda', 1792, 'Archivo Histórico Regional, Fondo Protocolos, Tomo 45', 'Registro de recaudación de impuestos locales de la corona española.', 'Cuenta y razón de los caudales de Real Hacienda pertenecientes al año de mil setecientos noventa y dos...');
+-- 2. Tabla de Investigadores (Usuarios del sistema)
+CREATE TABLE IF NOT EXISTS investigadores (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    rol VARCHAR(50) DEFAULT 'Investigador'
+);
+
+-- 3. Tabla de Documentos Historicos (Entidad Central)
+CREATE TABLE IF NOT EXISTS documentos (
+    id SERIAL PRIMARY KEY,
+    fondo_id INT REFERENCES fondos_archivisticos(id) ON DELETE SET NULL,
+    investigador_id INT REFERENCES investigadores(id) ON DELETE SET NULL,
+    titulo VARCHAR(255) NOT NULL,
+    anio INT,
+    ubicacion_fisica TEXT,
+    contexto_historico TEXT
+);
+
+-- 4. Tabla de Transcripciones Paleograficas (Relacion multidocumental)
+CREATE TABLE IF NOT EXISTS transcripciones (
+    id SERIAL PRIMARY KEY,
+    documento_id INT REFERENCES documentos(id) ON DELETE CASCADE,
+    investigador_id INT REFERENCES investigadores(id) ON DELETE SET NULL,
+    texto_paleografico TEXT NOT NULL,
+    notas_criticas TEXT,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insercion de datos semilla para validacion del sistema relacional
+INSERT INTO fondos_archivisticos (nombre, descripcion) VALUES
+('Seccion Colonia', 'Documentacion civil, eclesiastica y militar del periodo virreinal.'),
+('Fondo Protocolos', 'Registros notariales y escrituras publicas regionales.');
+
+INSERT INTO investigadores (nombre, correo, rol) VALUES
+('Santiago Salazar', 'santiago.salazar109@example.com', 'Investigador Principal');
+
+INSERT INTO documentos (fondo_id, investigador_id, titulo, anio, ubicacion_fisica, contexto_historico) VALUES
+(1, 1, 'Expediente sobre disputa de tierras - Juana Quiros', 1785, 'Archivo General de la Nacion, Caja 12, Carpeta 3', 'Litigio territorial civil procesado en el Virreinato durante las reformas bourbonicas.'),
+(2, 1, 'Manuscrito de cuentas de la Real Hacienda', 1792, 'Archivo Historico Regional, Tomo 45', 'Registro de recaudacion de impuestos locales de la corona espanola.');
+
+INSERT INTO transcripciones (documento_id, investigador_id, texto_paleografico, notas_criticas) VALUES
+(1, 1, 'En la ciudad de... ante mi el escribano publico comparecio Juana Quiros...', 'Transcripcion preliminar sujeta a revision de grafias.'),
+(2, 1, 'Cuenta y razon de los caudales de Real Hacienda pertenecientes al ano de...', 'Registro completo con firmas validadas.');
